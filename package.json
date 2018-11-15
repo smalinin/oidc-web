@@ -1,6 +1,6 @@
 {
   "name": "oidc-web",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "engines": {
     "node": ">= 8.10"
   },
@@ -58,7 +58,7 @@
     }
   ],
   "dependencies": {
-    "@trust/oidc-rp": "^0.6.0"
+    "@solid/oidc-rp": "^0.8.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
