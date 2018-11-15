@@ -1,7 +1,7 @@
 'use strict'
 
-const RelyingParty = require('@trust/oidc-rp')
-const Session = require('@trust/oidc-rp/lib/Session')
+const RelyingParty = require('@solid/oidc-rp')
+const Session = require('@solid/oidc-rp/lib/Session')
 const storage = require('./storage')
 
 // URI parameter types
@@ -88,8 +88,19 @@ class OIDCWebClient {
     this.browser.openLoginPopup()
   }
 
-  logout () {
+  async logout () {
     // TODO: send a logout request to the RP
+    var session = await this.currentSession()
+    var idp = session.issuer
+    const rp = await this.clients.get(idp)
+    if (rp) {
+      rp.store = this.store
+      try {
+        rp.logout()
+      } catch (err) {
+        console.error(err)
+      }
+    }
     this.clients.clear()
     this.session.clear()
   }
