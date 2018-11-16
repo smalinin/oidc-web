@@ -1,7 +1,7 @@
 # OpenID Connect Web Client _(@trust/oidc-web)_
 
-[![Build Status](https://travis-ci.org/solid/oidc-web.svg?branch=master)](https://travis-ci.org/solid/oidc-web)
-[![codecov](https://codecov.io/gh/solid/oidc-web/branch/master/graph/badge.svg)](https://codecov.io/gh/solid/oidc-web)
+[![Build Status](https://travis-ci.org/OpenLinkSoftware/oidc-web.svg?branch=master)](https://travis-ci.org/OpenLinkSoftware/oidc-web)
+[![codecov](https://codecov.io/gh/OpenLinkSoftware/oidc-web/branch/master/graph/badge.svg)](https://codecov.io/gh/OpenLinkSoftware/oidc-web)
 
 >  OIDC (OpenID Connect) authentication client for web browsers (Relying Party wrapper)
 
