@@ -195,9 +195,9 @@
     initButton('login_opl_ds', () => login('https://ods-qa.openlinksw.com'))
     initButton('login', () => login('https://localhost:8443'))
     initButton('login-custom', () => {
-      var idp = document.getElementById('custom-idp').value()
-      idp.endsWith("/")
-      idp = idp.substring(0, idp.length - 1)
+      var idp = document.getElementById('custom-idp').value
+      if (idp.endsWith("/"))
+        idp = idp.substring(0, idp.length - 1)
       login(idp)
     })
     initButton('cancel-custom', () => {
