@@ -183,6 +183,9 @@
   function logout () {
     console.log('Logging out...')
     authClient.logout()
+    hide('logged')
+    hide('logout')
+    window.close();
   }
 
   /**
