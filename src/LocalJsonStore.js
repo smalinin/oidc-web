@@ -48,10 +48,9 @@ class LocalJsonStore {
   }
 
   clear () {
-    var prefix = this.nampespace + '.'
     for (var i = 0; i < this.store.length; i++) {
       var key = this.store.key(i)
-      if (key.startsWith(prefix)) {
+      if (key.startsWith(this.namespace)) {
         this.store.removeItem(key)
       }
     }
