@@ -117,6 +117,9 @@
       <button type="button" id="login_opl_oidc" class="idp">
         <span class="label">Login with OpenLink WebID-OIDC</span>
       </button>
+      <button type="button" id="login_opl_v5" class="idp">
+        <span class="label">Login with OpenLink Solid Server ver:5.x</span>
+      </button>
       <button type="button" id="login_opl_ds" class="idp">
         <span class="label">Login with OpenLink Data Spaces (QA server)</span>
       </button>
@@ -183,6 +186,8 @@
   function logout () {
     console.log('Logging out...')
     authClient.logout()
+    hide('logged')
+    hide('logout')
   }
 
   /**
@@ -192,6 +197,7 @@
     initButton('login_community', () => login('https://solid.community'))
     initButton('login_test_space', () => login('https://solidtest.space'))
     initButton('login_opl_oidc', () => login('https://solid.openlinksw.com:8444'))
+    initButton('login_opl_v5', () => login('https://solid.openlinksw.com:8445'))
     initButton('login_opl_ds', () => login('https://ods-qa.openlinksw.com'))
     initButton('login', () => login('https://localhost:8443'))
     initButton('login-custom', () => {

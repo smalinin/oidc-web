@@ -96,9 +96,8 @@ class OIDCWebClient {
     if (rp) {
       rp.store = this.store
       try {
-        rp.logout()
+        await rp.logout()
       } catch (err) {
-        console.error(err)
       }
     }
     this.clients.clear()

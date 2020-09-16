@@ -48,8 +48,12 @@ class LocalJsonStore {
   }
 
   clear () {
-    // TODO: Clear only items starting with this.namespace
-    this.store.clear()
+    for (var i = 0; i < this.store.length; i++) {
+      var key = this.store.key(i)
+      if (key.startsWith(this.namespace)) {
+        this.store.removeItem(key)
+      }
+    }
   }
 }
 
