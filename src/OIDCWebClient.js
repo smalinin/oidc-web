@@ -1,7 +1,7 @@
 'use strict'
 
-const RelyingParty = require('@solid/oidc-rp')
-const Session = require('@solid/oidc-rp/lib/Session')
+const RelyingParty = require('@interop-alliance/oidc-rp')
+const Session = require('@interop-alliance/oidc-rp/src/Session')
 const storage = require('./storage')
 
 // URI parameter types
@@ -81,7 +81,8 @@ class OIDCWebClient {
       throw new Error('Missing provider argument for redirectTo()')
     }
     const rp = await this.rpFor(options.provider, options)
-    return this.sendAuthRequest(rp)
+    const authUri = await this.prepareAuthRequest({ rp })
+    return this.browser.redirectTo(authUri)
   }
 
   async loginPopup (options) {
@@ -119,9 +120,9 @@ class OIDCWebClient {
       return null
     }
 
-    let responseUri = this.browser.currentLocation()
+    const responseUri = this.browser.currentLocation()
 
-    let state = this.browser.stateFromUri(responseUri)
+    const state = this.browser.stateFromUri(responseUri)
 
     const provider = await this.providers.get(state)
     if (!provider) {
@@ -180,22 +181,23 @@ class OIDCWebClient {
    */
   async registerPublicClient (provider, options = {}) {
     provider = provider || options.issuer
-    let redirectUri = options['redirect_uri'] || this.browser.currentLocation()
+    const redirectUri = options.redirect_uri || this.browser.currentLocation()
 
-    let registration = {
+    const registration = {
       issuer: provider,
-      grant_types: options['grant_types'] || ['implicit'],
-      redirect_uris: [ redirectUri ],
-      response_types: options['response_types'] || ['id_token token'],
-      scope: options['scope'] || 'openid profile'
+      grant_types: options.grant_types || ['implicit'],
+      redirect_uris: [redirectUri],
+      response_types: options.response_types || ['id_token token'],
+      scope: options.scope || 'openid profile'
     }
 
-    let rpOptions = {
+    const rpOptions = {
       defaults: {
         popToken: this.popToken,
         authenticate: {
           redirect_uri: redirectUri,
-          response_type: 'id_token token'
+          response_type: 'id_token token',
+          scope: ['openid']
         }
       },
       store: this.store
@@ -217,19 +219,21 @@ class OIDCWebClient {
   /**
    * @param rp {RelyingParty}
    *
-   * @return {Promise}
+   * @return {Promise<string>}
    */
-  async sendAuthRequest (rp) {
-    let options = {}
-    let providerUri = rp.provider.url
+  async prepareAuthRequest ({ provider, rp }) {
+    if (!rp) {
+      rp = await this.rpFor(provider)
+    }
+    const options = {}
+    const providerUri = rp.provider.url
 
     const authUri = await rp.createRequest(options, this.store)
 
-    let state = this.browser.stateFromUri(authUri, QUERY)
+    const state = this.browser.stateFromUri(authUri, QUERY)
 
     await this.providers.save(state, providerUri) // save provider by state
-
-    return this.browser.redirectTo(authUri)
+    return authUri
   }
 }
 
